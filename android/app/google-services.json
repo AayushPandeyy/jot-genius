@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649970951795",
+    "project_id": "jot-genius",
+    "storage_bucket": "jot-genius.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649970951795:android:d9d2bafd2b70396050ec06",
+        "android_client_info": {
+          "package_name": "com.example.jot_genius"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkg13jay5LTlDAFLVXfNjH-Cfgtlr8EC4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
