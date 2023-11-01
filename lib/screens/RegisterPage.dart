@@ -29,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController phoneController = TextEditingController();
 
   bool isTaken = false;
-    List allData = [];
+  List allData = [];
 
     
 

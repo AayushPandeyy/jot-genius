@@ -29,6 +29,7 @@ void add(String username , String email , String phoneNumber,BuildContext contex
     'username' : username , 
     'email' : email , 
     'phoneNumber' : phoneNumber,
+    'uid' : uid
     
   }
   ).then((value){ displaySuccess(context, "User with id ${uid} has been added.");

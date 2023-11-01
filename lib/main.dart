@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jot_genius/firebase_options.dart';
 import 'package:jot_genius/screens/HomePage.dart';
 import 'package:jot_genius/screens/LogInPage.dart';
+import 'package:jot_genius/screens/WidgetTree.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LogInScreen(),
+      home:  WidgetTree(),
       debugShowCheckedModeBanner: false,
     );
   }
