@@ -42,7 +42,8 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
               FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').add({
                 'title' : titleController.text,
                 'body' : bodyController.text,
-                'date' : currDate
+                'date' : currDate,
+                'editedDate' : ''
               });
               Navigator.pop(context);
           },),

@@ -8,7 +8,8 @@ class EditNotesScreen extends StatefulWidget {
   final String? title;
   final String? body;
   final String? date;
-  const EditNotesScreen({super.key, this.title, this.body, this.date});
+  final String? editedDate;
+  const EditNotesScreen({super.key, this.title, this.body, this.date, this.editedDate});
 
   @override
   State<EditNotesScreen> createState() => _EditNotesScreenState();
@@ -60,7 +61,9 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
               IconButton(icon: Icon(Icons.done),onPressed: () {
                   FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).update({
                         'title' : titleController.text,
-                        'body' : bodyController.text
+                        'body' : bodyController.text,
+                        
+                        'editedDate' : DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()).toString()
                   }); 
                   Navigator.pop(context);
               },),
@@ -120,7 +123,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child:Text("Last Edited on : ${DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now())}",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)) ,
+              child:this.widget.editedDate.toString() !='' ?   Text("Last Edited on : ${this.widget.editedDate}",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)) : SizedBox.shrink(),
             )
           ],
         ),

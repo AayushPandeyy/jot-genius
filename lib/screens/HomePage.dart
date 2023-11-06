@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     
 
                                     Navigator.of(context).push(CupertinoPageRoute(builder: (context){
-                                          return EditNotesScreen(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body'],date:streamSnapshot.data!.docs[index]['date'] ,);
+                                          return EditNotesScreen(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body'],date:streamSnapshot.data!.docs[index]['date'] , editedDate: streamSnapshot.data!.docs[index]['editedDate'] ,);
                                     }));
                                     
                                   },
