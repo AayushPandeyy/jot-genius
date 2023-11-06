@@ -5,6 +5,7 @@ import 'dart:math' as math;
 class NotesBox extends StatefulWidget {
   final String? title;
   final String? body;
+
   const NotesBox({super.key, this.title, this.body});
 
   @override
@@ -36,8 +37,10 @@ class _NotesBoxState extends State<NotesBox> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(this.widget.title.toString(),style: TextStyle(fontSize:30,fontFamily: "AbrilFatface",fontWeight: FontWeight.bold,color: Colors.black),textAlign: TextAlign.center,),
-                              Expanded(child: Text(this.widget.body.toString(),style: TextStyle(fontSize:20,fontFamily: "SpaceGrotesk",color: Colors.black),softWrap: true,overflow: TextOverflow.fade,)),
+                              Text(this.widget.title.toString(),style: TextStyle(fontSize:25,fontFamily: "Gabarito",fontWeight: FontWeight.bold,color: Colors.black),textAlign: TextAlign.center,),
+                              SizedBox(height: 5,),
+                              Expanded(child: Text(this.widget.body.toString(),style: TextStyle(fontSize:17,fontFamily: "Arial",color: Colors.black),softWrap: true,overflow: TextOverflow.fade,)),
+                              
                             ],
                           ),
                       ),

@@ -7,7 +7,8 @@ import 'package:jot_genius/utilities/firestoreCRUD.dart';
 class EditNotesScreen extends StatefulWidget {
   final String? title;
   final String? body;
-  const EditNotesScreen({super.key, this.title, this.body});
+  final String? date;
+  const EditNotesScreen({super.key, this.title, this.body, this.date});
 
   @override
   State<EditNotesScreen> createState() => _EditNotesScreenState();
@@ -74,7 +75,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Container(
-                child: Text("${DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()) }",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)),
+                child: Text("Created on : ${this.widget.date}",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)),
               ),
             ),
             SizedBox(height: 20,),
@@ -82,6 +83,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
                   
                   maxLines: 1,
                   controller: titleController,
@@ -115,6 +117,10 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
                   ),
                 ),
               ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child:Text("Last Edited on : ${DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now())}",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)) ,
             )
           ],
         ),

@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   String? currUID;
 
   @override
@@ -65,10 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: ScreenSize.screenWidth *0.48,
-                        // decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
-                        child: Text("Jot Genius",style: TextStyle(fontSize: 30 , fontFamily: "SpaceGrotesk",fontWeight: FontWeight.bold),),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Container(
+                          width: ScreenSize.screenWidth *0.48,
+                          // decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
+                          child: Text("Jot Genius",style: TextStyle(fontSize: 30 , fontFamily: "SpaceGrotesk",fontWeight: FontWeight.bold),),
+                        ),
                       ),
                       Container(
                         width: ScreenSize.screenWidth *0.30,
@@ -98,13 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   width: ScreenSize.screenWidth,
-                  child: Center(
-                    child: Row(children: [
-                      Icon(Icons.notes),
-                      SizedBox(width: 8,),
-                      Text("Notes",style: TextStyle(fontSize: 30 , fontFamily: "SpaceGrotesk",fontWeight: FontWeight.bold))
-                    ],),
-                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Icon(Icons.newspaper),
+                    SizedBox(width: 8,),
+                    Text("Notes",style: TextStyle(fontSize: 30 , fontFamily: "SpaceGrotesk",fontWeight: FontWeight.bold))
+                  ],),
                 ),
                 SizedBox(height: 30,),
                 StreamBuilder(
@@ -115,28 +119,39 @@ class _HomeScreenState extends State<HomeScreen> {
                           if(streamSnapshot.connectionState == ConnectionState.waiting){
                             return CircularProgressIndicator();
                           }else{
+                          if(streamSnapshot.data!.docs.length == 0){
+                            return Center(
+                              child: Text("No notes created yet.",style: TextStyle(fontSize: 20 , fontFamily: "SpaceGrotesk",fontWeight: FontWeight.bold)),
+                            );
+                          }else{
                           return Expanded(
                               
                             
                               child : 
                                 GridView.count(crossAxisCount: 2,
+                                
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
                                 children :
                               
                               List.generate(streamSnapshot.data!.docs.length, (index){
+                                
                                 return GestureDetector(
                                   onTap: (){
+                                    
+
                                     Navigator.of(context).push(CupertinoPageRoute(builder: (context){
-                                          return EditNotesScreen(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body']);
+                                          return EditNotesScreen(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body'],date:streamSnapshot.data!.docs[index]['date'] ,);
                                     }));
+                                    
                                   },
-                                  child: NotesBox(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body'],));
+                                  
+                                  child: NotesBox(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body']));
                               })
                               
                                 )
-                          );}
+                          );}}
                         },
                       )
               ],

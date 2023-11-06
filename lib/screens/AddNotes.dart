@@ -18,6 +18,8 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
 
   String? currUID;
 
+  String currDate = DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()) ;
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,8 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
           child: IconButton(icon: Icon(Icons.done),onPressed: () {
               FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').add({
                 'title' : titleController.text,
-                'body' : bodyController.text
+                'body' : bodyController.text,
+                'date' : currDate
               });
               Navigator.pop(context);
           },),
@@ -52,7 +55,7 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Container(
-                child: Text("${DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()) }",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)),
+                child: Text("${currDate}",style: TextStyle(fontSize: 15 , fontFamily: "Gabarito",color: Colors.grey,letterSpacing: 2)),
               ),
             ),
             SizedBox(height: 20,),
@@ -60,7 +63,7 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
-                  
+                  style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
                   maxLines: 1,
                   controller: titleController,
                   cursorColor: Colors.greenAccent,
