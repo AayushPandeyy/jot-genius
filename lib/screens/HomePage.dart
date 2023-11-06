@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jot_genius/constants/ScreenSize.dart';
 import 'package:jot_genius/screens/AddNotes.dart';
+import 'package:jot_genius/screens/EditNotesScreen.dart';
 import 'package:jot_genius/screens/SettingScreen.dart';
 import 'package:jot_genius/utilities/firestoreCRUD.dart';
 import 'package:jot_genius/widgets/notesBox.dart';
@@ -125,7 +126,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children :
                               
                               List.generate(streamSnapshot.data!.docs.length, (index){
-                                return NotesBox(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body'],);
+                                return GestureDetector(
+                                  onTap: (){
+                                    Navigator.of(context).push(CupertinoPageRoute(builder: (context){
+                                          return EditNotesScreen(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body']);
+                                    }));
+                                  },
+                                  child: NotesBox(title: streamSnapshot.data!.docs[index]['title'], body: streamSnapshot.data!.docs[index]['body'],));
                               })
                               
                                 )
