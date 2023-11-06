@@ -30,7 +30,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
                 currUID = value;
               });
           });
-          await getNoteId().then((value){
+          await getNoteId(this.widget.body.toString() , currUID.toString()).then((value){
               setState(() {
                 currNotesId = value;
               });
@@ -38,10 +38,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
   });
   }
 
-  Future<String> getNoteId() async{
-    var data = await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').where('body',isEqualTo: this.widget.body.toString()).get();
-    return data.docs.first.id;
-  }
+
   @override
   Widget build(BuildContext context) {
     titleController.text = this.widget.title.toString();
@@ -51,13 +48,23 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
       appBar: AppBar(
         title: Align(
           alignment: Alignment.centerRight,
-          child: IconButton(icon: Icon(Icons.done),onPressed: () {
-              FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).update({
-                    'title' : titleController.text,
-                    'body' : bodyController.text
-              }); 
-              Navigator.pop(context);
-          },),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              
+              IconButton(onPressed: () async{
+                    Navigator.pop(context);
+                    await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).delete();
+              }, icon: Icon(Icons.delete)),
+              IconButton(icon: Icon(Icons.done),onPressed: () {
+                  FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).update({
+                        'title' : titleController.text,
+                        'body' : bodyController.text
+                  }); 
+                  Navigator.pop(context);
+              },),
+            ],
+          ),
         )
       ),
       body: Padding(
