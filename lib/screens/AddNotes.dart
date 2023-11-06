@@ -5,6 +5,7 @@ import 'package:jot_genius/constants/ScreenSize.dart';
 import 'package:jot_genius/utilities/firestoreCRUD.dart';
 
 class AddNotesScreen extends StatefulWidget {
+
   const AddNotesScreen({super.key});
 
   @override
@@ -17,6 +18,8 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
   TextEditingController bodyController = new TextEditingController();
 
   String? currUID;
+
+  bool isPinned = false;
 
   String currDate = DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()) ;
 
@@ -36,17 +39,34 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
     ScreenSize().init(context: context);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
-        title: Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(icon: Icon(Icons.done),onPressed: () {
-              FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').add({
-                'title' : titleController.text,
-                'body' : bodyController.text,
-                'date' : currDate,
-                'editedDate' : ''
-              });
-              Navigator.pop(context);
-          },),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(onPressed: (){
+                setState(() {
+                  isPinned = !isPinned;
+                });
+            }, icon: isPinned ? Icon(Icons.push_pin,color: Colors.red,) : Icon(Icons.push_pin,),),
+
+            IconButton(icon: Icon(Icons.done),onPressed: () {
+              if(titleController.text != '' && bodyController.text != ''){
+                isPinned ? FirebaseFirestore.instance.collection('users').doc(currUID).collection('Pinned').add({
+                  'title' : titleController.text,
+                  'body' : bodyController.text,
+                  'date' : currDate,
+                  'editedDate' : '',
+                  "timestamp": FieldValue.serverTimestamp()
+                }) : FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').add({
+                  'title' : titleController.text,
+                  'body' : bodyController.text,
+                  'date' : currDate,
+                  'editedDate' : '',
+                  "timestamp": FieldValue.serverTimestamp()
+                });
+                }
+                Navigator.pop(context);
+            },),
+          ],
         )
       ),
       body: Padding(

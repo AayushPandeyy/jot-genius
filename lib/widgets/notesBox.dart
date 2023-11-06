@@ -29,7 +29,8 @@ class _NotesBoxState extends State<NotesBox> {
                         padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),width: 5),)),
+          //Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)
+          top: BorderSide(color:Color(0xFFcfcf9a) ,width: 5),)),
         
                           width: 0.45*ScreenSize.screenWidth,
                           height: 0.05*ScreenSize.screenHeight,

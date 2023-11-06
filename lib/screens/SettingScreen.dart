@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jot_genius/constants/ScreenSize.dart';
+import 'package:jot_genius/screens/LogInPage.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -24,7 +27,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: TextButton(onPressed: (){
-                  
+                            FirebaseAuth.instance.signOut();
+                            Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: ((context) => LogInScreen())));
                     }, child: Text("Sign Out"),style: TextButton.styleFrom(
                                   textStyle: TextStyle(
 

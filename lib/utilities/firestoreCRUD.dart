@@ -54,8 +54,16 @@ Future<String> getCurrentUserId() async{
   return data.docs.first.id;
 }
 
-  Future<String> getNoteId(String body , String currUID) async{
-    var data = await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').where('body',isEqualTo: body).get();
+  Future<String> getNoteId(String body , String currUID , bool pinStatus) async{
+    var data;
+    if(pinStatus == true){
+
+    data = await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Pinned').where('body',isEqualTo: body).get();
+    }else{
+      
+    data = await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').where('body',isEqualTo: body).get();
+    
+    }
     return data.docs.first.id;
   }
 

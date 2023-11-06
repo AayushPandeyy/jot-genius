@@ -9,30 +9,41 @@ class EditNotesScreen extends StatefulWidget {
   final String? body;
   final String? date;
   final String? editedDate;
-  const EditNotesScreen({super.key, this.title, this.body, this.date, this.editedDate});
+  final String? timeStamp;
+  bool? isPinned;
+  EditNotesScreen({super.key, this.title, this.body, this.date, this.editedDate , this.isPinned, this.timeStamp});
 
   @override
   State<EditNotesScreen> createState() => _EditNotesScreenState();
 }
 
 class _EditNotesScreenState extends State<EditNotesScreen> {
+  bool? initialPinStatus;
+  
   TextEditingController titleController = TextEditingController();
   
   TextEditingController bodyController =  TextEditingController();
 
   String? currUID;
   String? currNotesId;
+  bool? pinStatus;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      pinStatus = this.widget.isPinned;
+    });
+    setState(() {
+      initialPinStatus = this.widget.isPinned;
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) async{
           await getCurrentUserId().then((value){
               setState(() {
                 currUID = value;
               });
           });
-          await getNoteId(this.widget.body.toString() , currUID.toString()).then((value){
+          await getNoteId(this.widget.body.toString() , currUID.toString() , initialPinStatus!).then((value){
               setState(() {
                 currNotesId = value;
               });
@@ -53,18 +64,68 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+
+              IconButton(onPressed: (){
+                    setState(() {
+                      if(pinStatus == true){
+
+                      pinStatus = false;
+                      }else if(pinStatus == false){
+                        pinStatus = true;
+                      }
+                    });
+              }, icon: pinStatus == true ? Icon(Icons.push_pin,color: Colors.red,) :Icon(Icons.push_pin)),
               
               IconButton(onPressed: () async{
                     Navigator.pop(context);
-                    await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).delete();
+                    
+                      await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Pinned').doc(currNotesId).delete();
+                    
+                      
+                      await FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).delete();
+
+                    
               }, icon: Icon(Icons.delete)),
               IconButton(icon: Icon(Icons.done),onPressed: () {
-                  FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).update({
+                if(initialPinStatus == true){
+                    if(pinStatus == true){
+                      FirebaseFirestore.instance.collection('users').doc(currUID).collection('Pinned').doc(currNotesId).update({
                         'title' : titleController.text,
                         'body' : bodyController.text,
-                        
                         'editedDate' : DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()).toString()
-                  }); 
+                  }) ;
+                    }else{
+                      FirebaseFirestore.instance.collection('users').doc(currUID).collection('Pinned').doc(currNotesId).delete();
+                      FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').add({
+                  'title' : titleController.text,
+                  'body' : bodyController.text,
+                  'date' : this.widget.date,
+                  'editedDate' : '',
+                  "timestamp": this.widget.timeStamp
+                });
+                    }
+                }else{
+                  if(pinStatus == true){
+                      FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).delete();
+                      FirebaseFirestore.instance.collection('users').doc(currUID).collection('Pinned').add({
+                  'title' : titleController.text,
+                  'body' : bodyController.text,
+                  'date' : this.widget.date,
+                  'editedDate' : DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()).toString(),
+                  "timestamp": this.widget.timeStamp
+                });
+                    }else{
+                      
+                      FirebaseFirestore.instance.collection('users').doc(currUID).collection('Notes').doc(currNotesId).update({
+                  'title' : titleController.text,
+                  'body' : bodyController.text,
+                  'date' : this.widget.date,
+                  'editedDate' : DateFormat("MMM dd , EEE , yyyy  hh:mm:ss a").format(DateTime.now()).toString(),
+                  "timestamp": this.widget.timeStamp
+                });
+                    }
+                }
+                  
                   Navigator.pop(context);
               },),
             ],
